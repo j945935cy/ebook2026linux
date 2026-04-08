@@ -1,0 +1,16 @@
+{
+  "name": "Linux 入門電子書",
+  "short_name": "Linux 入門",
+  "description": "適合初學者的基礎 Linux 教學電子書。",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4efe6",
+  "theme_color": "#b45a3c",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
