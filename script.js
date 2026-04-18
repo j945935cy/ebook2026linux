@@ -729,6 +729,10 @@ const chapterCheatSheetMap = [
   ["pwd", "ls", "cd", "mkdir", "touch", "man"]
 ];
 
+function ic(text) {
+  return text.replace(/`([^`]+)`/g, "<code>$1</code>");
+}
+
 const siteTitle = "Linux 入門電子書";
 const storageKey = "linux-ebook-gh-pages-state";
 const chapterTitle = document.querySelector("#chapter-title");
@@ -848,20 +852,20 @@ function renderChapter() {
   document.title = `${chapter.title}｜${siteTitle}`;
   chapterTitle.textContent = chapter.title;
   chapterContent.innerHTML = `
-    ${chapter.content.map((paragraph) => `<p>${paragraph}</p>`).join("")}
+    ${chapter.content.map((paragraph) => `<p>${ic(paragraph)}</p>`).join("")}
     ${chapter.examples ? `
       <section class="example-block">
         <h3>操作範例</h3>
         <div class="example-list">
           ${chapter.examples.map((example) => `
             <article class="example-card">
-              <h4>${example.title}</h4>
+              <h4>${ic(example.title)}</h4>
               <pre><code>${example.code}</code></pre>
               <div class="example-output-wrap">
                 <p class="label">預期輸出</p>
                 <pre><code>${example.output}</code></pre>
               </div>
-              <p>${example.explanation}</p>
+              <p>${ic(example.explanation)}</p>
             </article>
           `).join("")}
         </div>
@@ -873,8 +877,8 @@ function renderChapter() {
         <div class="pitfall-list">
           ${chapter.pitfalls.map((item) => `
             <article class="pitfall-card">
-              <p class="pitfall-problem"><strong>常見錯誤：</strong>${item.problem}</p>
-              <p><strong>排除方式：</strong>${item.fix}</p>
+              <p class="pitfall-problem"><strong>常見錯誤：</strong>${ic(item.problem)}</p>
+              <p><strong>排除方式：</strong>${ic(item.fix)}</p>
             </article>
           `).join("")}
         </div>
@@ -884,7 +888,7 @@ function renderChapter() {
       <section class="summary-block">
         <h3>重點整理</h3>
         <ul class="summary-list">
-          ${chapter.summary.map((point) => `<li>${point}</li>`).join("")}
+          ${chapter.summary.map((point) => `<li>${ic(point)}</li>`).join("")}
         </ul>
       </section>
     ` : ""}
@@ -892,7 +896,7 @@ function renderChapter() {
       <section class="task-block">
         <h3>練習任務</h3>
         <ul class="task-list">
-          ${chapter.tasks.map((task) => `<li>${task}</li>`).join("")}
+          ${chapter.tasks.map((task) => `<li>${ic(task)}</li>`).join("")}
         </ul>
       </section>
     ` : ""}
@@ -905,13 +909,14 @@ function renderChapter() {
           ${chapter.quiz.map((item, index) => `
             <article class="quiz-card">
               <h5>選擇題 ${index + 1}</h5>
-              <p class="quiz-question">${item.question}</p>
+              <p class="quiz-question">${ic(item.question)}</p>
               <ol class="quiz-options">
                 ${item.options.map((option, optionIndex) => `
-                    <li><span class="option-label">${getOptionLabel(optionIndex)}.</span> ${option}</li>
+                    <li><span class="option-label">${getOptionLabel(optionIndex)}.</span> ${ic(option)}</li>
                   `).join("")}
                 </ol>
-                <p class="quiz-answer"><strong>正確答案：</strong>${getOptionLabel(item.answer)}. ${item.options[item.answer]}</p>
+                <button type="button" class="reveal-btn" aria-expanded="false">顯示答案</button>
+                <p class="quiz-answer hidden"><strong>正確答案：</strong>${getOptionLabel(item.answer)}. ${ic(item.options[item.answer])}</p>
               </article>
             `).join("")}
           </div>
@@ -923,9 +928,12 @@ function renderChapter() {
           ${chapter.exercises.map((exercise, index) => `
             <article class="exercise-card">
               <h5>問答題 ${index + 1}</h5>
-              <p class="exercise-question">${exercise.question}</p>
-              <p><strong>解答：</strong>${exercise.answer}</p>
-              <p class="exercise-explanation"><strong>解析：</strong>${exercise.explanation}</p>
+              <p class="exercise-question">${ic(exercise.question)}</p>
+              <button type="button" class="reveal-btn" aria-expanded="false">顯示解答</button>
+              <div class="exercise-answer hidden">
+                <p><strong>解答：</strong>${ic(exercise.answer)}</p>
+                <p class="exercise-explanation"><strong>解析：</strong>${ic(exercise.explanation)}</p>
+              </div>
             </article>
           `).join("")}
         </div>
@@ -937,13 +945,23 @@ function renderChapter() {
         ${chapterCheatSheet.map((item) => `
           <article class="cheatsheet-card">
             <p class="cheatsheet-command"><code>${item.command}</code></p>
-            <p>${item.description}</p>
+            <p>${ic(item.description)}</p>
             <p class="cheatsheet-example"><code>${item.example}</code></p>
           </article>
         `).join("")}
       </div>
     </section>
   `;
+
+  chapterContent.querySelectorAll(".reveal-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const expanded = btn.getAttribute("aria-expanded") === "true";
+      const target = btn.nextElementSibling;
+      btn.setAttribute("aria-expanded", String(!expanded));
+      btn.textContent = expanded ? (btn.classList.contains("quiz-btn") ? "顯示答案" : "顯示解答") : "隱藏";
+      target.classList.toggle("hidden", expanded);
+    });
+  });
 
   const progress = ((state.chapterIndex + 1) / chapters.length) * 100;
   progressText.textContent = `閱讀進度 ${Math.round(progress)}%`;

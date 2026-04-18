@@ -81,5 +81,20 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- dev: auto-reload on file change (remove before production) -->
+  <script>
+    (function () {
+      let lastModified = null;
+      async function checkReload() {
+        try {
+          const res = await fetch(location.href, { method: 'HEAD', cache: 'no-store' });
+          const lm = res.headers.get('last-modified');
+          if (lastModified === null) { lastModified = lm; return; }
+          if (lm !== lastModified) location.reload();
+        } catch (_) {}
+      }
+      setInterval(checkReload, 1500);
+    })();
+  </script>
 </body>
 </html>

@@ -442,6 +442,37 @@ body.dark {
   border-radius: 12px;
 }
 
+.hidden {
+  display: none;
+}
+
+.reveal-btn {
+  display: inline-block;
+  margin: 10px 0 8px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent-soft);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.reveal-btn:hover {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.exercise-answer p {
+  margin: 0 0 10px;
+  text-indent: 0;
+}
+
+.exercise-answer p:last-child {
+  margin-bottom: 0;
+}
+
 .task-list {
   margin: 0;
   padding-left: 2em;
