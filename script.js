@@ -132,9 +132,16 @@
     content: [
       "學 Linux 不代表要背很多指令，而是要知道每個指令解決什麼問題。像 `cp` 用來複製、`mv` 用來移動或重新命名、`rm` 用來刪除、`cat` 用來快速查看檔案內容，這些都是每天會碰到的基本工具。",
       "初學時很值得養成一個習慣：每次輸入指令前，先想清楚『我要操作哪個檔案』『會不會改到重要內容』。尤其是 `rm` 這類刪除指令，在 Linux 裡通常沒有資源回收桶的保護，做錯就可能直接消失。",
-      "如果你忘記某個指令怎麼用，可以輸入 `man 指令名稱` 來看說明文件，例如 `man ls`。不用想著把所有參數一次記住，能知道去哪裡查，反而是更重要的能力。"
+      "如果你忘記某個指令怎麼用，可以輸入 `man 指令名稱` 來看說明文件，例如 `man ls`。不用想著把所有參數一次記住，能知道去哪裡查，反而是更重要的能力。",
+      "`echo` 是一個很常用的小工具，可以顯示文字，也常拿來測試變數內容或快速確認環境設定。另外遇到長文字檔時，`cat` 會一口氣輸出全部內容，這時候改用 `less` 更合適，它支援分頁捲動，按 `q` 離開。"
     ],
     examples: [
+      {
+        title: "範例：echo 與 less 的實際用法",
+        code: "echo '今天練習 Linux' > note.txt\ncat note.txt\nless /etc/os-release",
+        output: "今天練習 Linux\n（顯示 os-release 的分頁內容，按 q 離開）",
+        explanation: "這裡用 `echo` 把文字寫入檔案，再分別用 `cat` 與 `less` 查看，能清楚感受兩者的差異：`cat` 適合短檔，`less` 適合長檔。"
+      },
       {
         title: "範例：複製、重新命名與查看檔案",
         code: "cp note.txt backup.txt\nmv backup.txt final.txt\ncat final.txt",
@@ -159,8 +166,9 @@
       }
     ],
     summary: [
-      "`cp`、`mv`、`rm`、`cat` 是日常最常用的基本指令。",
+      "`cp`、`mv`、`rm`、`cat`、`echo`、`less` 是日常最常用的基本指令。",
       "刪除指令風險較高，操作前一定要先確認目標。",
+      "`echo` 適合顯示文字與測試變數，`less` 適合查看長文字檔。",
       "學會查 `man` 文件，比硬背全部參數更重要。"
     ],
     quiz: [
@@ -202,7 +210,8 @@
     content: [
       "Linux 很重視權限管理。每個檔案或目錄通常會有擁有者、群組，以及讀取、寫入、執行三種權限設定。這種設計能讓多人共用同一台系統時，仍然保持明確的安全邊界。",
       "你可以用 `ls -l` 查看檔案權限，例如最前面的 `rwxr-xr--` 就是在描述不同身分可做的事情。雖然剛開始看起來有點抽象，但只要記住 `r` 是讀、`w` 是寫、`x` 是執行，很快就能看懂基本結構。",
-      "當你需要管理權限時，常用指令有 `chmod`、`chown`，而需要暫時提升權限執行管理工作時，則常看到 `sudo`。初學者要特別注意，不要習慣把所有指令都加上 `sudo`，因為那代表你正在用更高風險的方式操作系統。"
+      "當你需要管理權限時，常用指令有 `chmod`、`chown`，而需要暫時提升權限執行管理工作時，則常看到 `sudo`。初學者要特別注意，不要習慣把所有指令都加上 `sudo`，因為那代表你正在用更高風險的方式操作系統。",
+      "`chmod` 有兩種常見寫法：符號法（`chmod +x`）與數字法（`chmod 755`）。數字法由三位數組成，分別對應擁有者、群組、其他人，每一位是三種權限（r=4、w=2、x=1）的加總。例如 `755` 表示擁有者可讀寫執行，其他人只能讀取與執行。"
     ],
     examples: [
       {
@@ -294,7 +303,7 @@
     quiz: [
       {
         question: "Ubuntu 常見的套件管理工具是什麼？",
-        options: ["apt", "pacman", "brew", "zypper-only"],
+        options: ["apt", "pacman", "brew", "zypper"],
         answer: 0
       },
       {
@@ -326,7 +335,287 @@
     ]
   },
   {
-    title: "第六章・學習 Linux 的建議路線",
+    title: "第六章・文字編輯器：nano 與 vim",
+    content: [
+      "在 Linux 中，很多工作都需要直接在終端機裡編輯文字檔，例如修改設定、寫腳本、查看記錄。如果你還沒有習慣使用終端機編輯器，`nano` 是最適合入門的選擇：開啟後可以直接輸入內容，畫面下方有快捷鍵提示，學習門檻很低。",
+      "`vim` 相對有名，但初學時會碰到一個常見障礙：剛開啟時無法直接輸入，需要先按 `i` 進入插入模式，輸入完後按 `Esc`，再輸入 `:wq` 才能儲存並離開。這和一般編輯器習慣完全不同，所以第一次使用時很容易卡住。",
+      "建議初學者先從 `nano` 建立信心，等對基本指令熟悉後再嘗試 `vim`。兩者都有各自的使用場景：`nano` 操作直覺，`vim` 則在熟悉後效率很高。不論選哪一個，記住儲存與離開的方式是最低限度的要求。"
+    ],
+    examples: [
+      {
+        title: "範例：用 nano 建立並儲存檔案",
+        code: "nano hello.txt\n# 輸入：Hello, Linux!\n# 按 Ctrl+O 儲存，Enter 確認，Ctrl+X 離開\ncat hello.txt",
+        output: "Hello, Linux!",
+        explanation: "`nano` 的儲存方式是 Ctrl+O，離開是 Ctrl+X，這兩個快捷鍵記住就能正常使用。"
+      },
+      {
+        title: "範例：vim 基本開啟與離開",
+        code: "vim hello.txt\n# 按 i 進入插入模式\n# 輸入：Hello from vim!\n# 按 Esc，輸入 :wq 儲存並離開\ncat hello.txt",
+        output: "Hello from vim!",
+        explanation: "`vim` 的模式切換是最重要的觀念。`i` 進入插入模式，`Esc` 回到一般模式，`:wq` 儲存離開，`:q!` 不儲存強制離開。"
+      }
+    ],
+    pitfalls: [
+      {
+        problem: "在 vim 裡怎麼輸入都沒有反應或出現奇怪字元。",
+        fix: "確認你目前在一般模式，先按 `Esc`，再按 `i` 進入插入模式，就可以正常輸入了。"
+      },
+      {
+        problem: "不知道怎麼離開 vim。",
+        fix: "先按 `Esc` 確認回到一般模式，再輸入 `:wq`（儲存後離開）或 `:q!`（不儲存強制離開）。"
+      }
+    ],
+    summary: [
+      "`nano` 操作直覺，適合初學者直接上手。",
+      "`vim` 有模式切換機制，`i` 進入插入，`Esc` 離開，`:wq` 儲存。",
+      "記住儲存與離開的快捷鍵是最基本的要求。"
+    ],
+    quiz: [
+      {
+        question: "在 nano 裡要儲存檔案，應該按什麼組合鍵？",
+        options: ["Ctrl+S", "Ctrl+O", "Ctrl+W", "Ctrl+X"],
+        answer: 1
+      },
+      {
+        question: "在 vim 中，要從一般模式切換為可以輸入文字的模式，應該按哪個鍵？",
+        options: ["Esc", "i", ":wq", "v"],
+        answer: 1
+      },
+      {
+        question: "在 vim 中不想儲存就直接離開，應該輸入什麼？",
+        options: [":wq", ":save", ":q!", "Ctrl+C"],
+        answer: 2
+      }
+    ],
+    tasks: [
+      "用 `nano` 建立一個名為 `practice.txt` 的檔案，輸入三行文字後儲存並離開。",
+      "嘗試用 `vim` 開啟同一個檔案，進入插入模式新增一行內容，再用 `:wq` 儲存離開。"
+    ],
+    exercises: [
+      { question: "終端機文字編輯器在 Linux 工作中有什麼用途？", answer: "用來直接在終端機裡編輯設定檔、腳本等文字內容。", explanation: "許多 Linux 操作場景沒有圖形介面，必須在終端機中修改文字，這時就需要終端機編輯器。" },
+      { question: "`nano` 適合哪種使用者？", answer: "適合剛開始學習 Linux 的初學者。", explanation: "它的介面直覺，下方有快捷鍵提示，不需要額外學習模式切換。" },
+      { question: "`vim` 的一般模式與插入模式有什麼差別？", answer: "一般模式用於指令操作，插入模式才能輸入文字。", explanation: "這種模式設計讓 vim 在熟悉後操作效率很高，但初學者容易不適應。" },
+      { question: "進入 vim 後要開始輸入文字，應該先做什麼？", answer: "先按 `i` 進入插入模式。", explanation: "vim 預設開啟在一般模式，無法直接輸入文字。" },
+      { question: "在 vim 中如何儲存並離開？", answer: "按 `Esc` 回到一般模式，輸入 `:wq` 後按 Enter。", explanation: "`:w` 是儲存，`:q` 是離開，合在一起就是儲存後離開。" },
+      { question: "nano 的離開快捷鍵是什麼？", answer: "Ctrl+X。", explanation: "畫面下方通常會顯示提示，`^X` 代表 Ctrl+X。" },
+      { question: "在 vim 中如果不想儲存就離開，應該怎麼做？", answer: "輸入 `:q!` 強制離開。", explanation: "加上 `!` 代表略過確認，直接放棄修改並關閉。" },
+      { question: "為什麼建議初學者從 nano 開始，而不是直接學 vim？", answer: "因為 nano 的操作較直覺，學習曲線較低。", explanation: "建立信心後再挑戰 vim 的模式機制，會比一開始就被卡住更有效率。" },
+      { question: "`vim` 相較於 `nano` 的優勢是什麼？", answer: "熟悉後操作效率更高，功能也更豐富。", explanation: "vim 支援大量快捷鍵與外掛，在進階使用場景中非常強大。" },
+      { question: "請說明你第一次使用 vim 時最可能卡住的地方。", answer: "不知道如何輸入文字，或不知道如何離開。", explanation: "這是幾乎每個人第一次用 vim 都會遇到的問題，理解模式機制後就不會再困惑。" }
+    ]
+  },
+  {
+    title: "第七章・管線與重新導向",
+    content: [
+      "Linux 指令的真正威力，在於可以把多個小工具串接在一起工作。管線符號 `|` 能把前一個指令的輸出，直接傳給下一個指令當作輸入，例如 `ls | grep txt` 就是先列出目錄內容，再從中篩選含有 `txt` 的項目。",
+      "重新導向（redirect）則是把指令的輸出改變方向，讓它寫入檔案而不是顯示在畫面上。`>` 會覆蓋寫入，`>>` 會附加到檔案末尾。例如 `echo 日期 > log.txt` 會建立一個只有這行的記錄，而 `echo 第二行 >> log.txt` 則會在後面追加。",
+      "`grep` 是管線中最常見的工具之一，用來搜尋符合條件的文字行。像 `cat /etc/passwd | grep root` 就是從系統使用者清單中找出包含 `root` 的行。這種「指令組合」的思維，是學好命令列的核心之一。"
+    ],
+    examples: [
+      {
+        title: "範例：用管線過濾清單",
+        code: "ls /etc | grep conf",
+        output: "（列出 /etc 目錄下名稱含有 conf 的檔案）",
+        explanation: "`ls` 列出目錄，`grep` 再過濾出含有特定字串的行，這是管線最直觀的用法之一。"
+      },
+      {
+        title: "範例：將輸出導向檔案",
+        code: "echo '第一行記錄' > notes.txt\necho '第二行記錄' >> notes.txt\ncat notes.txt",
+        output: "第一行記錄\n第二行記錄",
+        explanation: "第一行用 `>` 建立並寫入，第二行用 `>>` 附加，兩種導向方式的差別是是否覆蓋原有內容。"
+      }
+    ],
+    pitfalls: [
+      {
+        problem: "用 `>` 導向時，原本的檔案內容不見了。",
+        fix: "如果想保留原有內容再追加，請改用 `>>`。`>` 每次都會覆蓋寫入。"
+      },
+      {
+        problem: "`grep` 沒有搜尋到預期的內容。",
+        fix: "預設 `grep` 區分大小寫，可以加 `-i` 參數忽略大小寫，例如 `grep -i keyword`。"
+      }
+    ],
+    summary: [
+      "管線 `|` 能將前一個指令的輸出傳給下一個指令。",
+      "`>` 是覆蓋寫入，`>>` 是附加寫入。",
+      "`grep` 常搭配管線用來過濾文字輸出。"
+    ],
+    quiz: [
+      {
+        question: "管線符號 `|` 的作用是什麼？",
+        options: ["刪除指令", "將輸出傳給下一個指令", "复製檔案", "切換目錄"],
+        answer: 1
+      },
+      {
+        question: "`>` 和 `>>` 導向的主要差別是什麼？",
+        options: ["> 更快", ">> 會覆蓋，> 附加", "> 覆蓋，>> 附加", "兩者完全相同"],
+        answer: 2
+      },
+      {
+        question: "`grep` 常和管線搭配，主要用來做什麼？",
+        options: ["建立檔案", "搜尋文字", "切換目錄", "修改權限"],
+        answer: 1
+      }
+    ],
+    tasks: [
+      "使用 `ls /etc | grep conf` 找出 /etc 下含有 conf 的項目，記錄幾筆結果。",
+      "練習用 `>` 建立記錄檔，再用 `>>` 追加兩行，最後用 `cat` 確認結果。"
+    ],
+    exercises: [
+      { question: "管線 `|` 的用途是什麼？", answer: "將前一個指令的輸出作為下一個指令的輸入。", explanation: "這讓多個指令可以串接，彼此配合完成更複雜的工作。" },
+      { question: "請舉一個使用管線的實際例子。", answer: "例如 `ls | grep txt` 找出含有 txt 的項目。", explanation: "這是最常見的管線用法，搭配 `grep` 進行過濾。" },
+      { question: "`>` 與 `>>` 的差異是什麼？", answer: "`>` 覆蓋寫入，`>>` 附加寫入。", explanation: "使用前要確認是否需要保留原有內容，選錯符號會造成資料遺失。" },
+      { question: "如果你想把指令輸出同時保留到檔案，應該用哪個符號？", answer: "用 `>` 建立或 `>>` 附加。", explanation: "視情況決定：若要覆蓋則用 `>`，若要保留原有內容則用 `>>`。" },
+      { question: "`grep` 的基本功能是什麼？", answer: "搜尋文字中符合條件的行。", explanation: "它是命令列文字處理最重要的工具之一。" },
+      { question: "如何讓 `grep` 忽略大小寫？", answer: "加上 `-i` 參數，例如 `grep -i keyword`。", explanation: "預設 `grep` 區分大小寫，`-i` 能讓搜尋更靈活。" },
+      { question: "為什麼說管線思維是命令列的核心之一？", answer: "因為它能把多個小工具組合成強大的指令鏈。", explanation: "這是 Unix/Linux 設計哲學 Do one thing well 的實踐方式。" },
+      { question: "請描述 `ls /etc | grep ssh` 這個指令的意思。", answer: "列出 /etc 目錄內容，再從中過濾出含有 ssh 的項目。", explanation: "兩個指令各自做一件事，透過管線串接在一起。" },
+      { question: "如果你想把系統日誌裡含有 error 的行存到檔案，如何做到？", answer: "例如 `grep -i error /var/log/syslog > errors.txt`。", explanation: "這結合了 `grep` 過濾與 `>` 重新導向，是很實用的組合。" },
+      { question: "請說明 `echo hello >> diary.txt` 這個指令的執行結果。", answer: "把 hello 這個字串附加到 diary.txt 的末尾，不覆蓋原有內容。", explanation: "`>>` 保留原內容並在後面追加，是記錄類工作的常用方式。" }
+    ]
+  },
+  {
+    title: "第八章・程序管理",
+    content: [
+      "在 Linux 中，每一個正在執行中的程式都叫做「程序（process）」，而系統同時可以跑很多程序。`ps` 指令能列出目前的程序清單，`ps aux` 則會顯示所有使用者的程序。如果你想即時查看系統狀態與資源佔用，`top` 是很方便的工具，有點像 Windows 的工作管理員。",
+      "每個程序都有一個 PID（Process ID），這個數字是終止程序的依據。當你發現某個程序佔用過多資源或沒有回應，可以用 `kill PID` 來終止它，或者通用的 `kill -9 PID` 強制結束。不過，強制終止可能造成資料遺失，使用前要確認目標。",
+      "還有一個概念是前景與背景執行。一般執行指令時，終端機會等待它完成（前景）。如果你在指令後加 `&`，程序就會在背景執行，讓你可以繼續輸入其他指令。`fg` 可以把背景工作拉回前景，`Ctrl+C` 則可以終止目前前景執行中的程序。"
+    ],
+    examples: [
+      {
+        title: "範例：查看目前程序",
+        code: "ps aux | grep bash\ntop",
+        output: "（列出含有 bash 的程序資訊；top 會進入即時顯示畫面，按 q 離開）",
+        explanation: "`ps aux | grep bash` 利用管線快速找出 bash 相關程序。`top` 則提供即時的系統程序視圖，按 `q` 離開。"
+      },
+      {
+        title: "範例：背景執行與終止程序",
+        code: "sleep 30 &\nps aux | grep sleep\nkill %1",
+        output: "[1] 12345\n（顯示 sleep 程序資訊）\n[1]+  Terminated  sleep 30",
+        explanation: "`sleep 30 &` 讓 sleep 在背景跑，`kill %1` 終止第一個背景工作。`%1` 是 job 編號，也可以用 PID。"
+      }
+    ],
+    pitfalls: [
+      {
+        problem: "`kill PID` 沒有效果，程序還在跑。",
+        fix: "嘗試使用 `kill -9 PID` 強制終止，但注意這樣不會給程序機會做清理工作。"
+      },
+      {
+        problem: "把系統關鍵程序終止，造成服務異常。",
+        fix: "kill 前先確認 PID 對應的程序名稱，不熟悉時不要任意終止系統服務程序。"
+      }
+    ],
+    summary: [
+      "`ps aux` 可以查看所有程序，`top` 可即時監控資源使用。",
+      "每個程序有唯一 PID，`kill` 指令用 PID 終止程序。",
+      "指令加 `&` 在背景執行，`fg` 拉回前景，`Ctrl+C` 終止前景程序。"
+    ],
+    quiz: [
+      {
+        question: "哪個指令可以即時查看系統程序與資源使用？",
+        options: ["ps", "top", "kill", "bg"],
+        answer: 1
+      },
+      {
+        question: "PID 代表什麼？",
+        options: ["程式語言", "程序識別碼", "套件 ID", "使用者帳號"],
+        answer: 1
+      },
+      {
+        question: "在指令後加上 `&` 代表什麼？",
+        options: ["暫停程序", "在背景執行", "以 root 執行", "強制終止"],
+        answer: 1
+      }
+    ],
+    tasks: [
+      "執行 `ps aux | grep 你的使用者名稱`，查看自己目前開啟了哪些程序。",
+      "執行 `sleep 60 &` 讓它在背景跑，再用 `ps aux | grep sleep` 找到 PID，最後用 `kill` 終止它。"
+    ],
+    exercises: [
+      { question: "什麼是「程序（process）」？", answer: "是正在執行中的程式實例。", explanation: "每個執行中的程式都是一個程序，系統可以同時有很多程序並行運作。" },
+      { question: "`ps aux` 的 `a`、`u`、`x` 分別有什麼作用？", answer: "`a` 顯示所有使用者的程序，`u` 顯示使用者資訊，`x` 包含無終端機的程序。", explanation: "三個參數合用能讓你看到系統中最完整的程序清單。" },
+      { question: "`top` 與 `ps` 的主要差異是什麼？", answer: "`top` 是即時更新的動態畫面，`ps` 是一次性的靜態快照。", explanation: "依使用情境不同，有時需要快照，有時需要持續監控。" },
+      { question: "PID 的用途是什麼？", answer: "作為識別和操作特定程序的依據。", explanation: "kill 等指令都需要透過 PID 定位到你想操作的程序。" },
+      { question: "`kill` 與 `kill -9` 有什麼不同？", answer: "`kill` 會發送終止訊號讓程序自行結束，`kill -9` 則是強制刪除程序。", explanation: "強制終止可能導致資料沒有正常儲存或清理。" },
+      { question: "指令後加 `&` 的作用是什麼？", answer: "讓指令在背景執行，終端機可以繼續使用。", explanation: "適合用在需要較長時間執行的任務，讓你可以同時做其他事。" },
+      { question: "`fg` 指令的功能是什麼？", answer: "把背景工作拉回前景繼續執行。", explanation: "配合 `&` 和 `fg` 可以彈性控制前背景工作的切換。" },
+      { question: "`Ctrl+C` 在終端機中的作用是什麼？", answer: "終止目前前景執行中的程序。", explanation: "這是遇到程序無回應或想中斷時最常用的方式。" },
+      { question: "你如何找到一個佔用大量記憶體的程序？", answer: "執行 `top`，按 M 鍵可以依記憶體排序。", explanation: "`top` 預設依 CPU 排序，加上 M 可改為記憶體排序，快速定位問題程序。" },
+      { question: "請說明為什麼不應該隨意終止不認識的程序。", answer: "因為可能是系統關鍵服務，終止後會造成服務異常。", explanation: "kill 之前應先確認 PID 對應的程序名稱與用途。" }
+    ]
+  },
+  {
+    title: "第九章・網路基礎指令",
+    content: [
+      "現代的 Linux 使用場景幾乎都和網路有關，從遠端連線到伺服器、下載檔案、測試 API，都需要一些基本的網路指令。`ping` 是最簡單的連通性測試工具，輸入 `ping google.com` 可以確認你的機器是否能連上外部網路。按 `Ctrl+C` 可以停止持續發送的 ping。",
+      "`curl` 是一個功能豐富的 HTTP 工具，可以用它查看網頁內容、測試 API 的回應，也可以下載檔案。如果只是單純下載檔案，`wget` 更為直觀：輸入網址就能下載到目前目錄。兩者在實務中都非常常用。",
+      "`ssh` 是遠端安全連線的標準工具。格式是 `ssh 使用者名稱@主機位址`，連線後就能在遠端機器的終端機上工作，就像你就坐在那台電腦前面一樣。這是管理伺服器最基本的方式，也是學習 Linux 後很快就會用到的能力。"
+    ],
+    examples: [
+      {
+        title: "範例：測試網路連通與查看 HTTP 回應",
+        code: "ping -c 4 google.com\ncurl -I https://example.com",
+        output: "（ping 顯示延遲時間，curl -I 顯示 HTTP 回應標頭）",
+        explanation: "`-c 4` 讓 ping 只送 4 次封包後自動停止。`curl -I` 只顯示回應標頭，適合快速確認伺服器狀態。"
+      },
+      {
+        title: "範例：用 wget 下載檔案",
+        code: "wget https://example.com/sample.txt\nls",
+        output: "（下載進度顯示後，ls 可以看到 sample.txt 出現在目前目錄）",
+        explanation: "`wget` 下載後檔案會存在目前工作目錄，也可以用 `-O 指定檔名` 重新命名。"
+      }
+    ],
+    pitfalls: [
+      {
+        problem: "`ping` 持續執行沒有停止。",
+        fix: "按 `Ctrl+C` 中斷，或在指令加 `-c 數字` 限制送出封包數量，例如 `ping -c 4 google.com`。"
+      },
+      {
+        problem: "`ssh` 連線時顯示 `Connection refused` 或 `Permission denied`。",
+        fix: "確認目標主機的 SSH 服務是否在執行，以及使用者名稱與密碼（或金鑰）是否正確。"
+      }
+    ],
+    summary: [
+      "`ping` 用來測試網路連通性，`Ctrl+C` 停止或加 `-c` 限制次數。",
+      "`curl` 可測試 HTTP 請求，`wget` 用來下載檔案。",
+      "`ssh 使用者@主機` 是遠端連線伺服器的標準方式。"
+    ],
+    quiz: [
+      {
+        question: "哪個指令用來測試網路連通性？",
+        options: ["ssh", "curl", "ping", "wget"],
+        answer: 2
+      },
+      {
+        question: "`wget` 的主要用途是什麼？",
+        options: ["遠端連線", "下載檔案", "測試 API", "查看程序"],
+        answer: 1
+      },
+      {
+        question: "`ssh` 連線到遠端主機的基本格式是什麼？",
+        options: ["ssh 主機@使用者", "ssh 使用者@主機", "ssh -login 主機", "ssh --user 主機"],
+        answer: 1
+      }
+    ],
+    tasks: [
+      "執行 `ping -c 4 google.com`，記錄平均延遲時間是多少毫秒。",
+      "用 `curl -I https://example.com` 查看回應標頭，找出 HTTP 回應碼（如 200、301）。"
+    ],
+    exercises: [
+      { question: "`ping` 指令的用途是什麼？", answer: "測試與目標主機之間的網路連通性與延遲。", explanation: "它是最基礎的網路診斷工具，幾乎所有系統都內建。" },
+      { question: "如何讓 `ping` 只送出 4 次封包後自動停止？", answer: "加 `-c 4` 參數，例如 `ping -c 4 google.com`。", explanation: "不加參數的 ping 會持續執行，加 `-c` 可以限制次數。" },
+      { question: "`curl` 與 `wget` 在使用場景上有何不同？", answer: "`curl` 偏向測試 HTTP 請求，`wget` 偏向下載檔案。", explanation: "兩者功能有重疊，但 curl 更靈活，wget 下載用法更簡單。" },
+      { question: "如何用 `curl` 只查看 HTTP 回應標頭而不下載內容？", answer: "使用 `curl -I URL`。", explanation: "`-I` 發送 HEAD 請求，只取得標頭資訊，適合快速確認伺服器狀態與重新導向。" },
+      { question: "`wget` 下載的檔案預設存放在哪裡？", answer: "目前的工作目錄。", explanation: "如果要指定路徑，可以使用 `-O 路徑/檔名` 參數。" },
+      { question: "`ssh` 的基本連線格式是什麼？", answer: "`ssh 使用者名稱@主機位址`。", explanation: "這是遠端連線最常見的格式，連線後就會進入遠端的 shell 環境。" },
+      { question: "遠端連線後，你在終端機輸入的指令是在哪裡執行？", answer: "在遠端主機上執行。", explanation: "ssh 讓你像在本地操作一樣控制遠端機器。" },
+      { question: "`ssh` 出現 `Connection refused` 可能是什麼原因？", answer: "目標主機的 SSH 服務可能未啟動或不允許連線。", explanation: "確認服務狀態、防火牆規則或正確的 IP/port 是常見排查步驟。" },
+      { question: "為什麼學習 Linux 後很快會用到 `ssh`？", answer: "因為大多數 Linux 伺服器都用 ssh 進行遠端管理。", explanation: "雲端主機、VPS、開發伺服器基本上都透過 ssh 連線操作。" },
+      { question: "請說明一個你未來可能用得到網路指令的情境。", answer: "例如連線到雲端伺服器、下載安裝腳本、測試 API 端點。", explanation: "這些都是 Linux 日常使用中非常真實的需求。" }
+    ]
+  },
+  {
+    title: "第十章・學習 Linux 的建議路線",
     content: [
       "如果你剛開始學 Linux，最好的方法不是一次讀完所有理論，而是邊用邊學。先練習目錄切換、檔案操作、看說明文件，再慢慢接觸權限、服務管理、Shell Script，這樣比較不容易被大量名詞淹沒。",
       "可以給自己一個小任務，例如用指令建立專案資料夾、整理檔案、安裝 Git、打開編輯器，甚至寫一個簡單的備份腳本。當每個指令都對應到真實目的時，記憶會比單純背誦更牢固。",
@@ -408,15 +697,35 @@ const cheatSheet = [
   { command: "sudo", description: "以較高權限執行指令", example: "sudo apt update" },
   { command: "apt update", description: "更新套件索引", example: "sudo apt update" },
   { command: "apt install", description: "安裝套件", example: "sudo apt install git" },
-  { command: "uname -a", description: "查看系統核心與版本資訊", example: "uname -a" }
+  { command: "uname -a", description: "查看系統核心與版本資訊", example: "uname -a" },
+  { command: "echo", description: "顯示文字或變數值", example: "echo Hello Linux" },
+  { command: "less", description: "分頁查看檔案內容", example: "less /etc/os-release" },
+  { command: "grep", description: "搜尋符合條件的文字行", example: "grep 'root' /etc/passwd" },
+  { command: "nano", description: "文字編輯器（適合初學者）", example: "nano note.txt" },
+  { command: "vim", description: "強大的終端機文字編輯器", example: "vim note.txt" },
+  { command: "pipe |", description: "將前一個指令的輸出傳給下一個", example: "ls | grep txt" },
+  { command: "redirect >", description: "將輸出覆蓋寫入檔案", example: "echo hello > out.txt" },
+  { command: "redirect >>", description: "將輸出附加寫入檔案", example: "echo world >> out.txt" },
+  { command: "ps", description: "查看目前執行中的程序", example: "ps aux" },
+  { command: "top", description: "即時查看系統程序與資源使用", example: "top" },
+  { command: "kill", description: "終止程序", example: "kill 1234" },
+  { command: "ping", description: "測試網路連通性", example: "ping -c 4 google.com" },
+  { command: "curl", description: "發送 HTTP 請求或查看回應", example: "curl -I https://example.com" },
+  { command: "ssh", description: "遠端安全連線", example: "ssh user@host" },
+  { command: "wget", description: "下載檔案", example: "wget https://example.com/file.zip" },
+  { command: "rm -r", description: "遞迴刪除目錄與其內容", example: "rm -r old-folder" },
 ];
 
 const chapterCheatSheetMap = [
   ["uname -a", "pwd", "ls"],
   ["pwd", "ls", "cd", "mkdir", "touch"],
-  ["cp", "mv", "rm", "cat", "man"],
+  ["cp", "mv", "rm", "cat", "echo", "less", "man"],
   ["ls -l", "chmod", "chown", "sudo"],
   ["apt update", "apt install", "sudo", "man"],
+  ["nano", "vim"],
+  ["pipe |", "grep", "redirect >", "redirect >>"],
+  ["ps", "top", "kill"],
+  ["ping", "curl", "ssh", "wget"],
   ["pwd", "ls", "cd", "mkdir", "touch", "man"]
 ];
 
